@@ -130,14 +130,34 @@ class PointsTab(BaseTab, TableMixin):
         self.table.setItem(0, 0, empty_item)
     
     def _on_search(self):
+        """Улучшенный поиск с фильтрацией"""
         query = self.search_input.text().strip()
-        if len(query) < 2:
+        
+        # Очистка при пустом запросе
+        if not query:
             self.load_data()
             return
         
+        # Поиск с учетом регистра и частичного совпадения
         try:
-            points = self.db.search_points(query)
-            self.load_data(points)
+            if hasattr(self, 'db'):
+                if isinstance(self, PointsTab):
+                    points = self.db.search_points(query)
+                    self.load_data(points)
+                else:
+                    all_routes = self.db.get_all_routes()
+                    filtered = []
+                    query_lower = query.lower()
+                    
+                    for route in all_routes:
+                        if (query_lower in route['route_number'].lower() or 
+                            query_lower in route['route_name'].lower()):
+                            filtered.append(route)
+                    
+                    self.load_data(filtered)
+                    
+                # Подсветка найденного
+                self.statusBar().showMessage(f"Найдено: {self.table.rowCount()}", 3000)
         except Exception as e:
             self.show_error("Ошибка", f"Ошибка поиска: {e}")
     

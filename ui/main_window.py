@@ -93,6 +93,40 @@ class MainWindow(QMainWindow):
         
         toolbar.addSeparator()
 
+        # Добавить горячие клавиши для вкладок
+        switch_to_points = QAction("Пункты", self)
+        switch_to_points.setShortcut("Ctrl+1")
+        switch_to_points.triggered.connect(lambda: self.tabs.setCurrentIndex(0))
+        self.addAction(switch_to_points)
+        
+        switch_to_routes = QAction("Маршруты", self)
+        switch_to_routes.setShortcut("Ctrl+2")
+        switch_to_routes.triggered.connect(lambda: self.tabs.setCurrentIndex(1))
+        self.addAction(switch_to_routes)
+        
+        # Добавить горячие клавиши для действий
+        new_route = QAction("Новый маршрут", self)
+        new_route.setShortcut("Ctrl+N")
+        new_route.triggered.connect(lambda: self.routes_tab._add_grid())
+        self.addAction(new_route)
+        
+        new_point = QAction("Новый пункт", self)
+        new_point.setShortcut("Ctrl+Shift+N")
+        new_point.triggered.connect(lambda: self.points_tab._add_point())
+        self.addAction(new_point)
+        
+        find_shortcut = QAction("Поиск", self)
+        find_shortcut.setShortcut("Ctrl+F")
+        find_shortcut.triggered.connect(lambda: self._focus_search())
+        self.addAction(find_shortcut)
+
+    def _focus_search(self):
+        """Фокус на поле поиска текущей вкладки"""
+        current = self.tabs.currentWidget()
+        if hasattr(current, 'search_input'):
+            current.search_input.setFocus()
+            current.search_input.selectAll()
+
     def _open_settings(self):
         from .settings_dialog import SettingsDialog
         dialog = SettingsDialog(self)

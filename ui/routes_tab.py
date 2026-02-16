@@ -165,18 +165,34 @@ class RoutesTab(BaseTab, TableMixin):
             self.table.setItem(row, 2, self.create_item(grid['route_name']))
     
     def _on_search(self):
-        query = self.search_input.text().strip().lower()
+        """Улучшенный поиск с фильтрацией"""
+        query = self.search_input.text().strip()
+        
+        # Очистка при пустом запросе
         if not query:
             self.load_data()
             return
         
+        # Поиск с учетом регистра и частичного совпадения
         try:
-            all_routes = self.db.get_all_routes()
-            filtered = [
-                r for r in all_routes 
-                if query in r['route_number'].lower() or query in r['route_name'].lower()
-            ]
-            self.load_data(filtered)
+            if hasattr(self, 'db'):
+                if isinstance(self, PointsTab):
+                    points = self.db.search_points(query)
+                    self.load_data(points)
+                else:
+                    all_routes = self.db.get_all_routes()
+                    filtered = []
+                    query_lower = query.lower()
+                    
+                    for route in all_routes:
+                        if (query_lower in route['route_number'].lower() or 
+                            query_lower in route['route_name'].lower()):
+                            filtered.append(route)
+                    
+                    self.load_data(filtered)
+                    
+                # Подсветка найденного
+                self.statusBar().showMessage(f"Найдено: {self.table.rowCount()}", 3000)
         except Exception as e:
             self.show_error("Ошибка", f"Ошибка поиска: {e}")
     
@@ -225,4 +241,3 @@ class RoutesTab(BaseTab, TableMixin):
         for btn in [self.add_btn, self.delete_btn]:
             if hasattr(btn, 'update_theme'):
                 btn.update_theme()
-                

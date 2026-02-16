@@ -64,3 +64,47 @@ Thumbs.db
 .Trashes
 ehthumbs.db
 Desktop.ini
+
+# Temporary files
+.fuse_hidden*
+*.fuse*
+
+# Project documentation
+project_files*.txt
+list_*.sh
+list_*.bat
+*.bat
+
+# Database files
+*.db
+*.sql
+restart_bd.sql
+
+# Exported files
+*.csv
+*.xlsx
+*.pdf
+
+# Font files
+*.ttf
+*.otf
+
+# Compiled resources
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+*.egg-info/
+
+# Virtual Environment
+.venv/
+venv/
+.env/
+
+# IDE
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc

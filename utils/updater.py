@@ -11,7 +11,7 @@ class UpdateChecker(QThread):
     update_available = pyqtSignal(str, str, list)
     check_failed = pyqtSignal(str)
     
-    def __init__(self, current_version, github_repo="yourusername/tariff-app"):
+    def __init__(self, current_version, github_repo="KaTsUAfk/tariff-app"):
         super().__init__()
         self.current_version = current_version
         self.github_repo = github_repo

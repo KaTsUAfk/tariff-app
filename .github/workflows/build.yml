@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ['3.9']
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt
+        pip install pyinstaller
+    
+    - name: Build with PyInstaller
+      run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          pyinstaller --onefile --windowed --name "TariffApp" --icon "sicretHOME.ico" main.py
+        else
+          pyinstaller --onefile --windowed --name "TariffApp" --icon "sicretHOME.ico" main.py
+        fi
+      shell: bash
+    
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: TariffApp-${{ matrix.os }}
+        path: dist/TariffApp*
