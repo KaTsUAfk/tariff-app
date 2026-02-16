@@ -1,0 +1,7 @@
+"""requirements.txt"""
+PyQt5>=5.15
+psycopg2-binary>=2.9
+reportlab>=3.6
+openpyxl>=3.1
+python-dotenv>=0.19  # Добавить для переменных окружения
+pytest>=7.0  # Для тестов

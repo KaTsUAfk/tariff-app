@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "release_date": "2026-02-16",
+  "download_url": "https://github.com/yourusername/tariff-app/releases/latest",
+  "changes": [
+    "Добавлен экспорт в PDF",
+    "Улучшена обработка ошибок",
+    "Исправлены проблемы с темой"
+  ]
+}
